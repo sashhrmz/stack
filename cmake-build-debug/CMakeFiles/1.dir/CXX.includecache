@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/programming/Stack.h
+iostream
+-
+algorithm
+-
+vector
+-
+
+C:/programming/main.cpp
+test.h
+C:/programming/test.h
+
+C:/programming/test.h
+Stack.h
+C:/programming/Stack.h
+cassert
+C:/programming/cassert
+
