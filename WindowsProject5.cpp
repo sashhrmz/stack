@@ -4,7 +4,8 @@
 #include "framework.h"
 #include "Resource.h"
 #include "WindowsProject5.h"
-#include "Header1.h"
+#include "Stack.h"
+#include <string>
 
 
 #define MAX_LOADSTRING 100
@@ -28,7 +29,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: Разместите код здесь.
 	DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), 0, About);
     
 	return 0;
@@ -90,6 +90,9 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);
 
+	Stack<int> stack;
+	stack = Stack<int>();
+
 	switch (message)
 	{
 	case WM_INITDIALOG:
@@ -101,27 +104,24 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		switch (LOWORD(wParam))
 		{
-		case IDC_CREATE:
+
+		case IDC_PUSH:
 		{
-			Stack<int> stack;
-			stack = Stack<int>();
-			data.push_back(stack);
-			return (INT_PTR)TRUE;
-		}
-		case IDC_INPUT:
-		{
-			//	HWND hwndList = GetDlgItem(hDlg, IDC_LIST3);
-			//	CHAR szText[] = { "GREEN" };
-			//	SendMessage(hwndList, LB_ADDSTRING, 0, (WPARAM)szText);
 			data[0].Push(4);
 			return (INT_PTR)TRUE;
 		}
 		case IDC_TOP:
 		{
 			HWND hwndList = GetDlgItem(hDlg, IDC_LIST3);
-			//CHAR szText[] = { "GREEN" };
-			char top[] = { data[0].Top() };
-			SendMessage(hwndList, LB_ADDSTRING, 0, (WPARAM)top);
+			std::wstring top = std::to_wstring(data[0].Top());
+			SendMessage(hwndList, LB_ADDSTRING, 0, (WPARAM)top.c_str());
+			return (INT_PTR)TRUE;
+		}
+		case IDC_CLEAR:
+		{
+			HWND hwndList = GetDlgItem(hDlg, IDC_LIST3);
+			//std::wstring clear_massage = std::wstring_convert("Stack is empty");
+			//SendMessage(hwndList, LB_ADDSTRING, 0, (WPARAM)top.c_str());
 			return (INT_PTR)TRUE;
 		}
 		case IDOK:

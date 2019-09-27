@@ -13,13 +13,18 @@
 #define IDC_WINDOWSPROJECT5             109
 #define IDR_MAINFRAME                   128
 #define IDD_DIALOG1                     129
-#define IDC_INPUT                       1001
+#define IDC_PUSH                        1001
 #define IDC_TOP                         1002
-#define IDC_BUTTON4                     1003
-#define IDC_BUTTON5                     1004
-#define IDC_BUTTON6                     1005
+#define IDC_SORT                        1003
+#define IDC_ISEMPTY                     1004
+#define IDC_CLEAR                       1005
 #define IDC_LIST3                       1008
 #define IDC_CREATE                      1009
+#define IDC_POP                         1010
+#define IDC_BUTTON2                     1011
+#define IDC_COMMAND1                    1012
+#define IDC_EDIT1                       1013
+#define IDC_PUSHELEMENT                 1013
 #define IDC_STATIC                      -1
 
 // Next default values for new objects
@@ -29,7 +34,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        130
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1010
+#define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif
