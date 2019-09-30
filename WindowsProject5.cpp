@@ -6,7 +6,7 @@
 #include "WindowsProject5.h"
 #include "Stack.h"
 #include <string>
-
+#include "controller.h"
 
 #define MAX_LOADSTRING 100
 
@@ -18,9 +18,10 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // имя класса глав�
 // Отправить объявления функций, включенных в этот модуль кода:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
-LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
-
+INT_PTR CALLBACK    Router(HWND, UINT, WPARAM, LPARAM);
+Controller* controller;
+Stack<int>* stack;
+View* view;
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
@@ -28,106 +29,57 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 {
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
+	
+	stack = new Stack<int>({ 0, 0, 0, 0, 0 });
+	view = new View(hInstance, Router);
+	controller = new Controller(stack, view);
+	
+	controller->Init();
 
-	DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), 0, About);
-    
 	return 0;
 }
 
-
-
-//
-//  ФУНКЦИЯ: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  ЦЕЛЬ: Обрабатывает сообщения в главном окне.
-//
-//  WM_COMMAND  - обработать меню приложения
-//  WM_PAINT    - Отрисовка главного окна
-//  WM_DESTROY  - отправить сообщение о выходе и вернуться
-//
-//
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    switch (message)
-    {
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // Разобрать выбор в меню:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: Добавьте сюда любой код прорисовки, использующий HDC...
-            EndPaint(hWnd, &ps);
-        }
-        break;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
-    return 0;
-}
-
-std::vector<Stack<int>> data;
-// Обработчик сообщений для окна "О программе".
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    UNREFERENCED_PARAMETER(lParam);
-
-	Stack<int> stack;
-	stack = Stack<int>();
-
-	switch (message)
+INT_PTR CALLBACK Router(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
+    
+	UNREFERENCED_PARAMETER(lParam);
+	
+	switch (message) {
+	case WM_PAINT:
 	{
-	case WM_INITDIALOG:
-	{
-		HWND hwndList = GetDlgItem(hDlg, IDC_LIST3);
+		controller->Render();
 		break;
 	}
 	case WM_COMMAND:
 	{
 		switch (LOWORD(wParam))
 		{
-
 		case IDC_PUSH:
 		{
-			data[0].Push(4);
-			return (INT_PTR)TRUE;
-		}
-		case IDC_TOP:
-		{
-			HWND hwndList = GetDlgItem(hDlg, IDC_LIST3);
-			std::wstring top = std::to_wstring(data[0].Top());
-			SendMessage(hwndList, LB_ADDSTRING, 0, (WPARAM)top.c_str());
+			TCHAR buff[1024];
+			HWND hwndList = GetDlgItem(hDlg, IDC_PUSHELEMENT);
+			GetWindowText(hwndList, buff, 1024);
+			controller->Push(buff);
 			return (INT_PTR)TRUE;
 		}
 		case IDC_CLEAR:
 		{
-			HWND hwndList = GetDlgItem(hDlg, IDC_LIST3);
-			//std::wstring clear_massage = std::wstring_convert("Stack is empty");
-			//SendMessage(hwndList, LB_ADDSTRING, 0, (WPARAM)top.c_str());
+			controller->Clear();
 			return (INT_PTR)TRUE;
 		}
-		case IDOK:
+		case IDC_POP:
+		{
+			controller->Pop();
+			return (INT_PTR)TRUE;
+		}
+		case IDC_SORT:
+		{
+			controller->Sort();
+			return (INT_PTR)TRUE;
+		}
+
 		case IDCANCEL:
 		{
-			EndDialog(hDlg, LOWORD(wParam));
+			controller->Destruct();
 			return (INT_PTR)TRUE;
 		}
 		}

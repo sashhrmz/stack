@@ -160,8 +160,8 @@ public:
 
 	~Stack() = default;
 
-	Stack(std::initializer_list<T> list) noexcept : stack_(new T[list.size()]),
-		size_(list.size()) {
+	Stack(std::initializer_list<T> list) noexcept : size_(list.size()),
+		maxsize_(2 * list.size()), stack_(new T[maxsize_]) {
 		int i = 0;
 		for (auto it = list.begin(); it != list.end(); ++it, ++i) {
 			stack_[i] = *it;
@@ -339,7 +339,7 @@ void Stack<T>::Relocate(size_t new_size) {
 template<typename T>
 void Stack<T>::Push(T element) {
 	if (size_ == maxsize_) {
-		Relocate(size_ + 1);
+		Relocate(2 * size_);
 	}
 	stack_[size_] = element;
 	size_++;

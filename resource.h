@@ -15,6 +15,7 @@
 #define IDD_DIALOG1                     129
 #define IDC_PUSH                        1001
 #define IDC_TOP                         1002
+#define IDC_PUSH2                       1002
 #define IDC_SORT                        1003
 #define IDC_ISEMPTY                     1004
 #define IDC_CLEAR                       1005
@@ -23,7 +24,6 @@
 #define IDC_POP                         1010
 #define IDC_BUTTON2                     1011
 #define IDC_COMMAND1                    1012
-#define IDC_EDIT1                       1013
 #define IDC_PUSHELEMENT                 1013
 #define IDC_STATIC                      -1
 
