@@ -3,7 +3,7 @@
 
 #include "framework.h"
 #include "Resource.h"
-#include "WindowsProject5.h"
+#include "main.h"
 #include "Stack.h"
 #include <string>
 #include "controller.h"
